@@ -1,0 +1,92 @@
+{% extends 'base.html' %}
+{%load static %}
+{% block title %}FAQ{% endblock %}
+{% block content %}
+
+<style>
+    .terms-container {
+      padding: 3rem 1rem;
+    }
+    .terms-container h2 {
+      margin-top: 1.5rem;
+    }
+    .terms-container p, .terms-container ul {
+      margin-bottom: 1rem;
+    }
+    .terms-container ul {
+      padding-left: 1.5rem;
+    }
+  </style>
+
+<div class="container faq-container">
+    <h1 class="faq-header">Frequently Asked Questions (FAQ)</h1>
+
+    <div class="accordion" id="faqAccordion">
+      <div class="faq-item">
+        <h5 class="accordion-header" id="faqHeading1">
+          <button class="accordion-button" type="button" data-bs-toggle="collapse" data-bs-target="#faqCollapse1" aria-expanded="true" aria-controls="faqCollapse1">
+            What is your return policy?
+          </button>
+        </h5>
+        <div id="faqCollapse1" class="accordion-collapse collapse show" aria-labelledby="faqHeading1" data-bs-parent="#faqAccordion">
+          <div class="accordion-body">
+            We accept returns within 30 days of purchase. Items must be in their original condition and packaging. Please visit our Returns & Refunds page for more details.
+          </div>
+        </div>
+      </div>
+
+      <div class="faq-item">
+        <h5 class="accordion-header" id="faqHeading2">
+          <button class="accordion-button collapsed" type="button" data-bs-toggle="collapse" data-bs-target="#faqCollapse2" aria-expanded="false" aria-controls="faqCollapse2">
+            How do I track my order?
+          </button>
+        </h5>
+        <div id="faqCollapse2" class="accordion-collapse collapse" aria-labelledby="faqHeading2" data-bs-parent="#faqAccordion">
+          <div class="accordion-body">
+            Once your order has shipped, you will receive a tracking number via email. You can also track your order directly on our website under the 'Order Status' section.
+          </div>
+        </div>
+      </div>
+
+      <div class="faq-item">
+        <h5 class="accordion-header" id="faqHeading3">
+          <button class="accordion-button collapsed" type="button" data-bs-toggle="collapse" data-bs-target="#faqCollapse3" aria-expanded="false" aria-controls="faqCollapse3">
+            Do you ship internationally?
+          </button>
+        </h5>
+        <div id="faqCollapse3" class="accordion-collapse collapse" aria-labelledby="faqHeading3" data-bs-parent="#faqAccordion">
+          <div class="accordion-body">
+            Yes, we ship to many countries worldwide. Shipping costs and delivery times vary depending on the destination. Please contact us for more details.
+          </div>
+        </div>
+      </div>
+
+      <div class="faq-item">
+        <h5 class="accordion-header" id="faqHeading4">
+          <button class="accordion-button collapsed" type="button" data-bs-toggle="collapse" data-bs-target="#faqCollapse4" aria-expanded="false" aria-controls="faqCollapse4">
+            What payment methods do you accept?
+          </button>
+        </h5>
+        <div id="faqCollapse4" class="accordion-collapse collapse" aria-labelledby="faqHeading4" data-bs-parent="#faqAccordion">
+          <div class="accordion-body">
+            We accept chapa payment method. but we are adding a variety of payment methods, including credit cards, PayPal, and other digital payment options very soon. Please visit our Payment Options page for a complete list.
+          </div>
+        </div>
+      </div>
+
+      <div class="faq-item">
+        <h5 class="accordion-header" id="faqHeading5">
+          <button class="accordion-button collapsed" type="button" data-bs-toggle="collapse" data-bs-target="#faqCollapse5" aria-expanded="false" aria-controls="faqCollapse5">
+            How can I contact customer support?
+          </button>
+        </h5>
+        <div id="faqCollapse5" class="accordion-collapse collapse" aria-labelledby="faqHeading5" data-bs-parent="#faqAccordion">
+          <div class="accordion-body">
+            You can contact our customer support team via email at supergs290@gmail.com or call us at +251966752365. We are available 24/7 of Operation.
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+    
+{% endblock %}

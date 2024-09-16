@@ -1,0 +1,83 @@
+{% extends 'base.html' %}
+{% load static %}
+{% block title %}
+    Sign in
+{% endblock %}
+{% block content %}
+<!-- ========================= SECTION CONTENT ========================= -->
+<section class="section-content padding-y" style="min-height:84vh">
+
+    <!-- ============================ COMPONENT LOGIN   ================================= -->
+    <div class="card mx-auto" style="max-width: 380px; margin-top:100px;">
+        <div class="card-body">
+            
+            <form method="post" action="{% url 'login' %}" class="text-center">
+                <h4 class="card-title mb-4" style="color:brown">Sign in</h4>
+                {% csrf_token %}
+                {% if messages %}
+                    {% for message in messages %}
+                        <div class="alert alert-{{ message.tags }}">
+                            {{ message }}
+                        </div>
+                    {% endfor %}
+                {% endif %}
+                <div class="form-group">
+                    <label for="id_username">Username:</label>
+                    <input type="text" name="username" class="form-control" id="id_username" required>
+                    {% if form.username.errors %}
+                        <div class="alert alert-danger">
+                            {{ form.username.errors }}
+                        </div>
+                    {% endif %}
+                </div>
+
+                <div class="form-group">
+                    <label for="id_password">Password:</label>
+                    <input type="password" name="password" class="form-control" id="id_password" required>
+                    {% if form.password.errors %}
+                        <div class="alert alert-danger">
+                            {{ form.password.errors }}
+                        </div>
+                    {% endif %}
+                </div><br>
+                <button type="submit" class="btn btn-primary btn-block text-center">Login</button>
+            </form>
+        </div> <!-- card-body.// -->
+    </div> <!-- card .// -->
+
+    <p class="text-center mt-4">Don't have an account? <a href="{% url 'signup' %}" style="text-decoration: none;"> Sign up</a></p><br>
+    <p class="text-center mt-4"><a href="{% url 'password_reset' %}">Forget password?</a></p>
+    <br><br>
+    <!-- ============================ COMPONENT LOGIN  END.// ================================= -->
+
+
+</section>
+<style>
+.btn-primary {
+    background-color: #316600;
+    width: 200px;
+    text-align: center;
+}
+</style>
+<script>
+    // Set a timeout to fade out success/error alerts after 3 seconds
+    window.onload = function() {
+        setTimeout(function() {
+            const alerts = document.querySelectorAll('.alert');
+            alerts.forEach(alert => {
+                alert.classList.add('fade-out');
+                setTimeout(() => {
+                    alert.remove();
+                }, 500); // time to wait before removing the alert
+            });
+        }, 3000); // time to wait before starting fade-out
+    };
+</script>
+<style>
+    .fade-out {
+        opacity: 0;
+        transition: opacity 0.5s ease-out;
+    }
+</style>
+<!-- ========================= SECTION CONTENT END// ========================= -->
+{% endblock %}

@@ -1,0 +1,83 @@
+{% extends 'base.html' %}
+{% load static %}
+{% block content %}
+ 
+<!-- ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~MAIN SECTION~~~~~~~~~~~~~~~~~~~~~~~~ -->
+<!-- <section class="section-intro padding-y-sm">
+    <div class="container">
+        <div class="intro-banner-wrap">
+            <img style="width: 500px; height:200px;float: right;"  src="{% static 'images/2.jpeg'%}" alt="logo pics" class="img-fluid rounded">
+        </div>
+    </div>
+
+</section> -->
+<!-- ##############################################Section################################### -->
+<section class="section-name padding-y-sm">
+    <div class="container">
+        <header class="section-heading">
+            <a href="#" class="btn btn-outline-primary float-right">Shop more</a>
+            <h3 class="section-title">Our Products</h3>
+
+        </header>
+        <div class="row">
+            {% for product in products %}
+            <div class="col-md-3">
+                <div class="card card-product-grid">
+                    <a href="{% url 'product_detail' category_slug=product.category.slug product_slug=product.slug %}" class="img-wrap">
+                        <img src="{{ product.image.url }}" alt="product image" class="card-img-top">
+                    </a>
+                    <figcaption class="info-wrap">
+                        <a href="{% url 'product_detail' category_slug=product.category.slug product_slug=product.slug %}" class="title">{{ product.product_name }}</a>
+                        <div class="price mt-1">${{ product.price }}.00</div> <!-- price-wrap.// -->
+                    </figcaption>
+                </div>
+            </div>
+
+               
+                
+            {% endfor %}}
+        </div>
+    </div>
+
+</section>
+
+<style>
+    .section-intro {
+        background-color: #F9F9F9;
+    }
+    .section-name {
+        background-color: #FFFFFF;
+        padding: 2rem 0;
+    }
+    .section-heading h3.section-title {
+        color: #003366;
+    }
+    .section-heading .btn-outline-primary {
+        border-color: #FF6F61;
+        color: #FF6F61;
+    }
+    .section-heading .btn-outline-primary:hover {
+        background-color: #FF6F61;
+        color: #003366;
+    }
+    .card-product-grid {
+        border: 1px solid #E0E0E0;
+        border-radius: 8px;
+        background-color: #FFFFFF;
+        box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+    }
+    .card-product-grid .img-wrap img {
+        border-bottom: 1px solid #E0E0E0;
+    }
+    .card-product-grid .info-wrap .title {
+        color: #003366;
+    }
+    .card-product-grid .info-wrap .price {
+        color: #FF6F61;
+    }
+
+
+</style>
+    
+ 
+ {% endblock %}

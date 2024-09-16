@@ -1,0 +1,112 @@
+{% extends 'base.html' %}
+{% load static %}
+{% block title %}Place Order {% endblock %}
+{% block content %}
+<section class="section-content padding-y bg">
+<div class="container">
+
+
+
+<!-- ============================ COMPONENT 2 ================================= -->
+<div class="row">
+		<main class="col-md-8">
+<article class="card mb-4">
+<div class="card-body">
+	<h4 class="card-title mb-4">Billing Address</h4>
+	<form action="{% url 'place_order' %}" method="POST">
+			
+       {% csrf_token %}
+		<div class="row">
+		
+				<div class="form-group col-sm-6">
+					<label>Address<span>*</span></label>
+					<select name="" class="form-control">
+						<option value="">Addis Abeba</option>
+						<option value="">Adama</option>
+						<option value="">SHashemene</option>
+						<option value="">Hawassa</option>
+						<option value="">Other</option>
+					</select>-
+					{{ form.first_name }}
+				</div>
+				<div class="form-group col-sm-6">
+					<!-- <label>Last name<span>*</span></label> -->
+					{{form.last_name }}
+				</div>
+				<div class="form-group col-sm-6"><br>
+					<!-- <label>Phone<span>*</span></label> -->
+					{{ form.phone }}
+				</div>
+				<div class="form-group col-sm-6">
+					<!-- <label>Email<span>*</span></label> -->
+				{{ form.email }}
+				</div>
+					<div class="form-group col-sm-6"><br>
+					<!-- <label>Address line 1<span>*</span></label> -->
+					{{ form.address_line1 }}
+				</div>
+					<div class="form-group col-sm-6"><br>
+					<!-- <label>Address line 2<span>*</span></label> -->
+					{{ form.address_line2 }}
+				</div>
+				
+				<div class="form-group col-sm-4">
+					<!-- <label>City</label> -->
+					{{ form.city }}
+				</div>
+				<div class="form-group col-sm-4">
+					<!-- <label>Region</label> -->
+					{{ form.state }}
+				</div>
+				<div class="form-group col-sm-4">
+					<!-- <label>Country</label> -->
+					{{ form.country }}
+				</div>
+				<div class="form-group col-sm-12">
+					<!-- <label>Order Note</label> -->
+					{{ form.order_note }}
+				</div>
+		</div> <!-- row.// -->	
+</div> <!-- card-body.// -->
+</article> <!-- card.// -->
+
+	</main> <!-- col.// -->
+		<aside class="col-md-4">
+			<div class="card">
+		<div class="card-body">
+			<dl class="dlist-align">
+			  <dt>Total price:</dt>
+			  <dd class="text-right">${{ total }}</dd>
+			</dl>
+			<dl class="dlist-align">
+			  <dt>Tax:</dt>
+			  <dd class="text-right"> ${{ tax }}</dd>
+			</dl>
+			<dl class="dlist-align">
+			  <dt>Total:</dt>
+			  <dd class="text-right text-dark b"><strong>${{ final }}</strong></dd>
+			</dl>
+			<hr>
+			<p class="text-center mb-3">
+				<img src="{ item.product.image.url }}" alt="{{item.product.product_name}}" height="26">
+			</p>
+			<button type="submit" name="submit" class="btn btn-primary btn-block" style="background-color:#003366;"> Place Order </button>
+			</form>
+		</div> <!-- card-body.// -->
+		</div> <!-- card.// -->
+		</aside> <!-- col.// -->
+	</div> <!-- row.// -->
+
+<!-- ============================ COMPONENT 2 END//  ================================= -->
+
+
+
+
+</div> <!-- container .//  -->
+</section>
+<style>
+label span{
+color:red;
+}
+</style>
+{% endblock %}

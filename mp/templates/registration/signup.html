@@ -1,0 +1,94 @@
+{% extends 'base.html' %}
+{% load static %}
+{% block title %}
+    Sign Up here
+{% endblock %}
+{% block content %}
+
+<script src="https://www.google.com/recaptcha/api.js" async defer></script>
+
+<!-- ========================= SECTION CONTENT ========================= -->
+<section class="section-content padding-y">
+
+<!-- ============================ COMPONENT REGISTER   ================================= -->
+	<div class="card mx-auto" style="max-width:520px; margin-top:40px;">
+      <article class="card-body">
+		
+		<form method="post" action="{% url 'signup' %}" class="text-center">
+            <header class="mb-4"><h4 class="card-title">Sign up</h4></header><br>
+		{% csrf_token %}
+            {% if form.non_field_errors %}
+                <div class="alert alert-danger">
+                    {{ form.non_field_errors }}
+                </div>
+            {% endif %}
+            <div class="form-group">
+            
+                <label for="id_username">First Name:</label>
+                <input type="text" name="usrname" class="form-control" id="id_username" required>
+              <br>
+            </div>
+          <div class="form-group">
+                <label for="id_sername">Last Name:</label>
+                <input type="text" name="username" class="form-control" id="id_uername" required>
+              <br>
+            </div>
+                   <div class="form-group">
+                <label for="id_username">Username:</label>
+                <input type="text" name="username" class="form-control" id="id_username" required><br>
+                {% if form.username.errors %}
+                    <div class="alert alert-danger">
+                        {{ form.username.errors }}
+                    </div>
+                {% endif %}
+            </div>
+            <div class="form-group">
+                <label for="id_email">Email:</label>
+                <input type="email" name="email" class="form-control" id="id_email" required><br>
+                {% if form.email.errors %}
+                    <div class="alert alert-danger">
+                        {{ form.email.errors }}
+                    </div>
+                {% endif %}
+            </div>
+            <div class="form-group">
+                <label for="id_password1">Password:</label>
+                <input type="password" name="password1" class="form-control" id="id_password1" required><br>
+                {% if form.password1.errors %}
+                    <div class="alert alert-danger">
+                        {{ form.password1.errors }}
+                    </div>
+                {% endif %}
+            </div>
+            <div class="form-group">
+                <label for="id_password2">Confirm Password:</label>
+                <input type="password" name="password2" class="form-control" id="id_password2" required><br>
+                {% if form.password2.errors %}
+                    <div class="alert alert-danger">
+                        {{ form.password2.errors }}
+                    </div>
+                {% endif %}
+            </div>
+            <div class="g-recaptcha" data-sitekey="6LfBDycqAAAAALv4AxJIdq_NEDddNa5PQY7qpEy7"></div>
+            <button type="submit" class="btn btn-primary btn-block">Sign Up</button>
+        	</form><br>
+		</article><!-- card-body.// -->
+    </div> <!-- card .// -->
+    <p class="text-center mt-4">Have an account? <a href="{% url 'login' %}">Log In</a></p>
+    <br><br>
+<!-- ============================ COMPONENT REGISTER  END.// ================================= -->
+
+
+</section>
+<style>
+.btn-primary{
+  background-color:#3dd207;
+  width: 300px;
+}
+</style>
+<!-- ========================= SECTION CONTENT END// ========================= -->
+
+
+{% endblock %}
+
+

@@ -1,0 +1,321 @@
+{% load static %}
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="pragma" content="no-cache" />
+    <meta http-equiv="cache-control" content="max-age=604800" />
+
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title> {% block title %}
+        AdamaSmart |Online SHopping
+        {% endblock %}  
+    </title>
+    <link href="{% static 'images/1.jpeg' %}" rel="shortcut icon" type="image/x-icon">
+    
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet">
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js"></script>
+    <link href="{% static 'fonts/fontawesome/css/all.min.css'%}" type="text/css" rel="stylesheet">
+    <script src="{% static 'js/script.js' %}" type="text/javascript"></script>
+    
+    <style type="text/css">
+        .navbar-brand span {
+            display: flex;
+            align-items: center;
+        }
+        .navbar-brand span img {
+            width: 100px;
+            height: 100px;
+            border-radius: 50%;
+            margin-right: 10px;
+            margin-top: 2px;
+            margin-left: 0px;
+
+        }
+        .navbar-brand span h2 {
+            display: inline-block;
+            margin: 0;
+            color: cyan;
+        }
+        body {
+            background-color: #F9F9F9;
+            color: #333333;
+        }
+        .navbar {
+            background-color: #206600; /* Dark Blue */
+            padding: 0.5rem 1rem;/* Adjust the padding as needed */
+            
+        }
+        .navbar-brand {
+            padding: 0.5rem 1rem; /* Adjust the padding for the brand */
+        }
+        .navbar-nav .nav-item {
+            padding: 0.5rem; /* Adjust padding for nav items */
+        }
+        .navbar-nav .nav-link {
+            padding: 0.5rem 1rem; /* Adjust padding for nav links */
+            color: #F9F9F9; /* Light Gray */
+        }
+        .navbar-nav .nav-link:hover {
+            color: #FF6F61; /* Coral */
+        }
+        .dropdown-menu {
+            background-color: #003366; /* Dark Blue */
+            border: none;
+        }
+        .dropdown-item {
+            color: #F9F9F9; /* Light Gray */
+        }
+        .dropdown-item:hover {
+            background-color: #FF6F61; /* Coral */
+            color: #003366; /* Dark Blue */
+        }
+        .btn-outline-primary {
+            border-color: #FF6F61; /* Coral */
+            color: #FF6F61; /* Coral */
+        }
+        .btn-outline-primary:hover {
+            background-color: #FF6F61; /* Coral */
+            color: #0f6600; /* Dark Blue */
+        }
+        .footer-bottom {
+            background-color: #076600; /* Dark Blue */
+            color: #F9F9F9; /* Light Gray */
+            
+            
+        }
+        .footer-bottom i {
+            color: #FF6F61; /* Coral */
+        }
+        .navbar-brand span {
+            color: #FF6F61; /* Coral */
+        }
+        .back-to-top {
+            background-color: #FF6F61;
+            border-radius: 50%;
+            position: fixed;
+            bottom: 20px;
+            right: 20px;
+            width: 50px;
+            height: 50px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            color: #ffffff;
+        }
+        #callPopup {
+            display: none;
+            position: fixed;
+            top: 50%;
+            left: 50%;
+            transform: translate(-50%, -50%);
+            padding: 20px;
+            border: 1px solid #ccc;
+            background-color: #076600;
+            box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+            z-index: 1000;
+        }
+        #callPopup button {
+            margin-top: 10px;
+        }
+        
+        
+
+ </style>
+
+ 
+    
+</head>
+<body>
+    
+    <script src="https://code.jquery.com/jquery-3.5.1.slim.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/@popperjs/core@2.0.11/dist/umd/popper.min.js"></script>
+    <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js"></script>
+
+
+    
+    <!-- navigation -->
+    <header class="section-header">
+        <nav class="navbar navbar-expand-lg navbar-dark">
+            <div class="container">
+                <a href="{% url 'home' %}" class="navbar-brand">
+                    <span> 
+                        <img src="{% static 'images/1.jpeg' %}" alt="" style="border: 4px solid #ff6f61;">
+                        <!-- <h2>|Shop Here Anything </h2></span> -->
+                </a>
+                <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarNav" aria-controls="navbarNav"
+                aria-expanded="false" aria-label="Toggle navigation">
+                <span class="navbar-toggler-icon"></span>
+            </button>
+            <div class="collapse navbar-collapse" id="navbarNav">
+                <ul class="navbar-nav me-auto">
+                    <li class="nav-item">
+                        <a  href="{% url 'home' %}" class="nav-link">Home</a>
+                    </li>
+                    
+                
+                    <li class="nav-item">
+                        <a href="{% url 'shop' %}" class="nav-link">Shop</a>
+                    </li>
+                    
+                 
+
+                </ul>
+                <form class="d-flex me-3" role="search" action="{% url 'search' %}">
+                    <input class="form-control me-2" type="search" placeholder="Search" aria-label="Search" name="keyword">
+                    <button class="btn btn-outline-primary" type="submit"><i class="fa fa-search"></i></button>
+                </form>
+                <ul class="navbar-nav">
+                    <li class="nav-item">
+                        <a href="#" id="callLink" class="nav-link" style="color: #ffffff;"><i class="fa fa-phone"></i> Call Us</a>
+                    </li>
+                    {% if user.is_authenticated %}
+                    <li class="nav-item">
+                        <a href="{% url 'dashboard' %}" class="nav-link"><i class="fas fa-tachometer-alt"></i>Dashboard</a>
+                    </li>
+                    <li class="nav-item">
+                        {% if user.profile.profile_picture %}
+                            <a href="{%url 'profile' %}" class="nav-link">
+                                <img src="{{ user.profile.profile_picture.url }}" alt="{{ user.username }}'s profile picture" style="width: 80px; height: 80px; border-radius: 50%; border:4px solid #ff6f61;">
+                                </a>
+                            {% else %}
+                                 <a href="{% url 'profile' %}" class="nav-link">{{user.username}}</a>
+                            {% endif %}
+                    </li>
+                   
+                    <li class="nav-item">
+                        <a href="{% url 'logout' %}" class="nav-link"><i class="fa fa-sign-out-alt"></i> Logout</a>
+                    </li>
+                    {% else %}
+                    <li class="nav-item">
+                        <a href="{% url 'login' %}" class="nav-link"><i class="fa fa-sign-in-alt"></i> Sign in</a>
+                    </li><i class="fa fa-sign-in-alt"></i>
+                    <li class="nav-item">
+                        <a href="{% url 'signup' %}" class="nav-link"><i class="fa fa-user-plus"></i>Register</a>
+                    </li>
+                        
+                    {% endif %}
+                    <li class="nav-item">
+                        <a class="nav-link" href="{% url 'cart' %}">
+                            <i class="fa fa-shopping-cart"></i>
+                            <span class="badge bg-danger">{{ carts }}</span>
+                        </a>
+                    </li>
+
+                </ul>
+
+            </div>
+
+            </div>
+        </nav>
+        <div id="callPopup">
+            <p style="color: #F9F9F9;">Call Us at:  <span id="phoneNumber"></span></p>
+            <button onclick="closePopup()">Close</button>
+        </div>
+        <script src="script.js"></script>
+
+    </header>
+  
+       <div class="container mt-5">
+        {% if request.path == '/' %}
+        <h1 class="text-title">Featured Products</h1>
+        {% endif %}
+        <div class="row">
+          
+            {% for product in featured_products %}
+            
+               <div class="col-md-3">
+                <div class="card mb-4">
+                <a href="{%url 'product_detail' category_slug=product.category.slug product_slug=product.slug%}"> 
+                    <img src="{{ product.image.url }}" class="card-img-top" alt="{{ product.product_name }}">
+                    <div class="card-body">
+                        <h5 class="card-title">{{ product.product_name }}</h5>
+                       <p class="card-text">${{ product.price }}</p>
+                       
+                    </a> 
+                    
+                    </div>
+                </div>
+               </div>
+                
+            {% endfor %}
+            {% if request.path == '/' %}
+                      <a href="{%url 'shop' %}" class="nav-link float:right;">shop more</a>
+                        
+             {% endif %}
+           
+        </div>
+       </div>
+  
+    <div id="cnt">
+        {% block content %}
+            
+        {% endblock %}
+
+    </div>
+                          <!-- footer -->
+    <footer class="footer-bottom">
+        <div class="container">
+            <section class="footer-top padding-y">
+                <div class="row">
+                    <div class="col-md-3 col-lg-3 col-sm-12">
+                        <ul class="list-unstyled text-center">
+                            <li><a href="{%url 'about_us' %}" class="text-light" style="text-decoration: none;">About Us</a></li>
+                            <li><a href="{%url 'contact_us' %}" class="text-light" style="text-decoration: none;">Contact Us</a></li>
+                            <li><a href="{%url 'privacy_and_policy' %}" class="text-light" style="text-decoration: none;">Privacy Policy</a></li>
+                            <li><a href="{%url 'terms_of_conditions' %}" class="text-light"style="text-decoration: none;">Terms of Conditions</a></li>
+                            <li><a href="{%url 'faq' %}" class="text-light"style="text-decoration: none;">FAQ</a></li>
+                           
+                        </ul>
+
+                    </div>
+                    <div class="col-md-3 col-lg-3 col-sm-12">
+                        <h5 class="title text-light">Customer Service</h5>
+                        <ul class="list-unstyled">
+                            <li><a href="{%url 'return_policy' %}" class="text-light"style="text-decoration: none;">Return Policy</a></li>
+                            <li><a href="{%url 'faq' %}" class="text-light"style="text-decoration: none;">FAQ</a></li>
+                            
+                        </ul>
+                    </div> <!-- col.// -->
+                    <div class="col-md-3 col-lg-3 col-sm-12">
+                        <h5 class="title text-light">Follow Us</h5>
+                        <ul class="list-inline">
+                            <li class="list-inline-item"><a href="#"><i class="fab fa-facebook-f"></i></a></li>
+                            <li class="list-inline-item"><a href="#"><i class="fab fa-twitter"></i></a></li>
+                            <li class="list-inline-item"><a href="#"><i class="fab fa-instagram"></i></a></li>
+                            <li class="list-inline-item"><a href="#"><i class="fab fa-youtube"></i></a></li>
+                        </ul>
+                    </div> <!-- col.// -->
+            
+                </div> <!-- row.// -->
+             <!-- footer-top.// -->
+        
+            
+                <div class="row">
+                    <div class="col-md-6 text-center text-light">
+                        <p>&copy; 2024 AdamaSmart Online Shopping. All rights reserved.</p>
+                    </div>
+                </div> <!-- row.// -->
+            </section> <!-- footer-bottom.// -->
+        </div> <!-- container.// -->
+        
+    </footer>
+    <a href="#" class="btn back-to-top">
+        <i class="fa fa-chevron-up"></i>
+      </a>
+
+      <script>
+        document.getElementById('callLink').addEventListener('click', function(event) {
+            event.preventDefault();
+            const phoneNumber = '+251966752365';
+            document.getElementById('phoneNumber').textContent = phoneNumber;
+            document.getElementById('callPopup').style.display = 'block';
+
+        });
+        function closePopup() {
+            document.getElementById('callPopup').style.display = 'none';
+        }
+    </script>
+</body>
+</html>
+

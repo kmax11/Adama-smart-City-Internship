@@ -1,0 +1,47 @@
+{% extends "base.html" %}
+{% block title %}User Profile{% endblock %}
+{% block content %}
+<div class="container">
+    <div class="row justify-content-center">
+        <div class="col-md-8">
+            <div class="card mt-5">
+                <div class="card-header text-center">
+                    <h2>{{ user.username }}'s Profile</h2>
+                </div>
+                <div class="card-body text-center">
+
+                    <!-- Display the profile picture -->
+                    {% if user.profile.profile_picture %}
+                        <img src="{{ user.profile.profile_picture.url }}" alt="{{ user.username }}'s profile picture" class="img-thumbnail rounded-circle mb-3" style="width: 150px; height: 150px;">
+                    {% else %}
+                       <span>{{user.username}}</span>
+                    {% endif %}
+
+                    <!-- Profile update form -->
+                    <form method="POST" enctype="multipart/form-data" class="form">
+                        {% csrf_token %}
+                       <div class="form-group">
+                        <div class="form-control">
+                            {{ user_form.as_p|safe }}
+                        </div>
+                        <div class="form-control">
+                            {{ profile_form.as_p|safe }}
+                        </div>
+                       </div>
+                        <button type="submit" class="btn btn-primary btn-block ">Update Profile</button>
+                    </form>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+<style>
+    img {
+        width: 150px;
+        height: 150px;
+        border-radius: 50%;
+        margin-bottom: 10px;
+        border: 4px solid #ff6f61; 
+    }
+</style>
+{% endblock %}

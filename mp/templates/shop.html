@@ -1,0 +1,261 @@
+{% extends 'base.html' %}
+{% load static %}
+{% block title %}Shop {% endblock %}
+
+{% block content %}
+<!-- ========================= SECTION PAGETOP ========================= -->
+<section class="page-top bg" id="str">
+    <div class="container">
+        {% if 'search' in request.path %}
+        <hr><hr>
+            <h2 style="background-color: #206600;" class="title-page">Your Search Result</h2>
+        {% else %}
+        <hr><hr>
+            <h2 style="background-color: #206600;" class="title-page">Our Store</h2>
+        {% endif %}
+    </div> <!-- container // -->
+</section>
+<!-- ========================= SECTION PAGETOP END// ========================= -->
+
+<!-- ========================= SECTION CONTENT ========================= -->
+<section class="section-content padding-y">
+    <div class="container">
+        <div class="row">
+            <aside class="col-md-3">
+                <div class="card">
+                    <article class="filter-group">
+                        <header class="card-header">
+                            <a href="#" data-bs-toggle="collapse" data-bs-target="#collapse_1" aria-expanded="true">
+                                <i class="icon-control fa fa-chevron-down"></i>
+                                <h6 class="title">Categories</h6>
+                            </a>
+                        </header>
+                        <div class="filter-content collapse show" id="collapse_1">
+                            <div class="card-body">
+                                <ul class="list-menu">
+                                    <li><a href="{% url 'shop' %}">All products</a></li>
+                                    {% for i in cat %}
+                                        <li><a href="{% url 'product_by_category' i.slug %}">{{ i.category_name }}</a></li>
+                                    {% endfor %}
+                                </ul>
+                            </div>
+                        </div>
+                    </article> <!-- filter-group  .// -->
+
+                    <article class="filter-group">
+                        <header class="card-header">
+                            <a href="#" data-bs-toggle="collapse" data-bs-target="#collapse_4" aria-expanded="false">
+                                <i class="icon-control fa fa-chevron-down"></i>
+                                <h6 class="title">Sizes</h6>
+                            </a>
+                        </header>
+                        <div class="filter-content collapse" id="collapse_4">
+                            <div class="card-body">
+                                <label class="checkbox-btn">
+                                    <input type="checkbox">
+                                    <span class="btn btn-light"> XS </span>
+                                </label>
+                                <label class="checkbox-btn">
+                                    <input type="checkbox">
+                                    <span class="btn btn-light"> SM </span>
+                                </label>
+                                <label class="checkbox-btn">
+                                    <input type="checkbox">
+                                    <span class="btn btn-light"> LG </span>
+                                </label>
+                                <label class="checkbox-btn">
+                                    <input type="checkbox">
+                                    <span class="btn btn-light"> XXL </span>
+                                </label>
+                            </div>
+                        </div>
+                    </article> <!-- filter-group .// -->
+
+                    <article class="filter-group">
+                        <header class="card-header">
+                            <a href="#" data-bs-toggle="collapse" data-bs-target="#collapse_3" aria-expanded="false">
+                                <i class="icon-control fa fa-chevron-down"></i>
+                                <h6 class="title">Price range</h6>
+                            </a>
+                        </header>
+                        <div class="filter-content collapse" id="collapse_3">
+                            <div class="card-body">
+                                <div class="form-row">
+                                    <div class="form-group col-md-6">
+                                        <label>Min</label>
+                                        <select class="form-control">
+                                            <option value="0">$0</option>
+                                            <option value="50">$50</option>
+                                            <option value="100">$100</option>
+                                            <option value="150">$150</option>
+                                            <option value="200">$200</option>
+                                            <option value="500">$500</option>
+                                            <option value="1000">$1000</option>
+                                        </select>
+                                    </div>
+                                    <div class="form-group col-md-6">
+                                        <label>Max</label>
+                                        <select class="form-control">
+                                            <option value="50">$50</option>
+                                            <option value="100">$100</option>
+                                            <option value="150">$150</option>
+                                            <option value="200">$200</option>
+                                            <option value="500">$500</option>
+                                            <option value="1000">$1000</option>
+                                            <option value="2000">$2000+</option>
+                                        </select>
+                                    </div>
+                                </div> <!-- form-row.// -->
+                                <button class="btn btn-block btn-primary">Apply</button>
+                            </div><!-- card-body.// -->
+                        </div>
+                    </article> <!-- filter-group .// -->
+                </div> <!-- card.// -->
+            </aside> <!-- col.// -->
+
+            <main class="col-md-9">
+                <header class="border-bottom mb-4 pb-3">
+                    <div class="form-inline">
+                        <span class="mr-md-auto">{{ count }} Items found</span>
+                    </div>
+                </header><!-- sect-heading -->
+
+                <div class="row">
+                    {% for i in products %}
+                        <div class="col-md-4 mb-4">
+                            <figure class="card card-product-grid">
+                                <div class="img-wrap">
+                                    <a href="{% url 'product_detail' category_slug=i.category.slug product_slug=i.slug %}">
+                                        <img src="{{i.image.url}}" alt="{{ i.product_name }}">
+                                    </a>
+                                </div> <!-- img-wrap.// -->
+                                <figcaption class="info-wrap">
+                                    <div class="fix-height">
+                                        <a href="{% url 'product_detail' category_slug=i.category.slug product_slug=i.slug %}" class="title">{{ i.product_name }}</a>
+                                        <div class="price-wrap mt-2">
+                                            <span class="price">${{ i.price }}</span>
+                                            <del class="price-old">${{ i.price }}</del>
+                                        </div> <!-- price-wrap.// -->
+                                    </div>
+                                    <a href="{% url 'product_detail' category_slug=i.category.slug product_slug=i.slug %}" class="btn btn-block btn-primary">View detail</a>
+                                </figcaption>
+                            </figure>
+                        </div> <!-- col.// -->
+                    {% endfor %}
+                </div> <!-- row end.// -->
+
+                <nav class="mt-4" aria-label="Page navigation">
+                    {% if products.has_other_pages %}
+                        <ul class="pagination">
+                            {% if products.has_previous %}
+                                <li class="page-item"><a class="page-link" href="?page={{ products.previous_page_number }}">Previous</a></li>
+                            {% else %}
+                                <li class="page-item disabled"><a class="page-link" href="#">Previous</a></li>
+                            {% endif %}
+                            {% for j in products.paginator.page_range %}
+                                {% if products.number == j %}
+                                    <li class="page-item active"><a class="page-link" href="#">{{ j }}</a></li>
+                                {% else %}
+                                    <li class="page-item"><a class="page-link" href="?page={{ j }}">{{ j }}</a></li>
+                                {% endif %}
+                            {% endfor %}
+                            {% if products.has_next %}
+                                <li class="page-item"><a class="page-link" href="?page={{ products.next_page_number }}">Next</a></li>
+                            {% else %}
+                                <li class="page-item disabled"><a class="page-link" href="#">Next</a></li>
+                            {% endif %}
+                        </ul>
+                    {% endif %}
+                </nav>
+            </main> <!-- col.// -->
+        </div> <!-- row end.// -->
+    </div> <!-- container .// -->
+</section>
+<!-- ========================= SECTION CONTENT END// ========================= -->
+
+<style type="text/css">
+    a{
+    text-decoration:none;
+    }
+    .page-top.bg {
+        background-color: #002e66;
+        color: #FFFFFF;
+        padding: 2rem 0;
+        text-align: center;
+    }
+    .page-top .title-page {
+        margin: 0;
+        font-size: 2rem;
+        color:#fff;
+    }
+    .section-content {
+        background-color: #F9F9F9;
+        padding: 3rem 0;
+    }
+    .card {
+        border: 1px solid #E0E0E0;
+    }
+    .card-header {
+        background-color: #336600;
+        color: #FFFFFF;
+    }
+    .card-header a {
+        color: #FFFFFF;
+    }
+    .card-header a:hover {
+        color: #FF6F61;
+    }
+    .list-menu a {
+        color: #336600;
+    }
+    .list-menu a:hover {
+        color: #FF6F61;
+    }
+    .btn-light {
+        background-color: #F9F9F9;
+        color: #336600;
+    }
+    .btn-light:hover {
+        background-color: #336600;
+        color: #FFFFFF;
+    }
+    .btn-primary {
+        background-color: #336600;
+        border-color: #336600;
+    }
+    .btn-primary:hover {
+        background-color: #FF6F61;
+        border-color: #FF6F61;
+    }
+    .card-product-grid {
+        border: 1px solid #E0E0E0;
+        border-radius: 8px;
+        background-color: #FFFFFF;
+        box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+    }
+    .card-product-grid .img-wrap img {
+        border-bottom: 1px solid #E0E0E0;
+        max-width: 200px;
+        /* height: 200px;*/
+    }
+    .card-product-grid .info-wrap .title {
+        color: #336600;
+    }
+    .card-product-grid .info-wrap .price {
+        color: #FF6F61;
+    }
+    .pagination .page-item.active .page-link {
+        background-color: #336600;
+        border-color: #336600;
+        color:#FFFFFF;
+    }
+    .pagination .page-item .page-link {
+        color: #336600;
+    }
+    .pagination .page-item .page-link:hover {
+        background-color: #FF6F61;
+        color: #FFFFFF;
+    }
+</style>
+
+{% endblock %}

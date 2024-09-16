@@ -1,0 +1,229 @@
+
+{% extends 'base.html' %}
+{% load static %}
+{% block title %}Product Details{% endblock %}
+{% load shop_extras %}
+{% block content %}
+
+<section class="section-content padding-y bg">
+    <div class="container">
+
+        <!-- Product Detail Section -->
+        <div class="card">
+            <div class="row no-gutters">
+                <aside class="col-md-6">
+                    <article class="gallery-wrap">
+                        <div class="img-big-wrap">
+                            <a href="#"><img src="{{detail.image.url}}" class="img-fluid rounded"></a>
+                        </div>
+                    </article>
+                </aside>
+                <main class="col-md-6 border-left">
+                    <form action="{% url 'add_cart' detail.id %}" method="POST">
+                        {% csrf_token %}
+                        <article class="content-body">
+                            <h2 class="title">{{ detail.product_name }}</h2>
+                            <div class="mb-3">
+                                <var class="price h4">ETB {{ detail.price }}</var>
+                            </div>
+                            <p>{{ detail.description }}</p>
+                            <hr>
+                            <div class="row">
+                                <div class="item-option-select">
+                                    <h6>Choose Color</h6>
+                                    <select name="color" class="form-control">
+                                        <option value="" disabled selected>Select</option>
+                                        {% for i in detail.variation_set.colors %}
+                                            <option value="{{ i.variation_value | lower }}">{{ i.variation_value | capfirst }}</option>
+                                        {% endfor %}
+                                    </select>
+                                </div>
+                            </div>
+                            <div class="row mt-3">
+                                <div class="item-option-select">
+                                    <h6>Select Size</h6>
+                                    <select name="size" class="form-control">
+                                        <option value="" disabled selected>Select</option>
+                                        {% for i in detail.variation_set.sizes %}
+                                            <option value="{{ i.variation_value | lower }}">{{ i.variation_value | capfirst }}</option>
+                                        {% endfor %}
+                                    </select>
+                                </div>
+                            </div>
+                            <hr>
+                            {% if detail.stock <= 0 %}
+                                <h5 class="text-danger">Out of stock</h5>
+                            {% else %}
+                                <button type="submit" class="btn btn-primary"> <span class="text">Add to Cart</span> <i class="fas fa-shopping-cart"></i> </button>
+                            {% endif %}
+                        </article>
+                    </form>
+                </main>
+            </div>
+        </div>
+
+
+       <!-- Reviews Section -->
+        <div class="row mt-5">
+            <div class="col-md-9">
+                <header class="section-heading">
+                    <h3>Customer Reviews</h3>
+                    <p>Average Rating: {{ average_rating|default:0|floatformat:1 }} / 5</p>
+                </header>
+                {% for review in reviews %}
+                <article class="box mb-3 p-3">
+                    <div class="icontext w-100">
+                        <img src="{{user.profile.profile_picture.url}}" style="max-width: 200px; max-height: 100px; border-radius: 50%;" class="img-xs icon rounded-circle">
+                        <div class="text">
+                            <span class="date text-muted float-md-right">{{ review.created_at }}</span>
+
+
+<h6 class="mb-1">{{ review.user.username }}</h6>
+                            <p>Rating: 
+                                {% for _ in review.rating|default:0|times %}
+                                    <i class="fa fa-star text-warning"></i>
+                                {% endfor %}
+                                {% for _ in 5|subtract:review.rating|times %}
+                                    <i class="fa fa-star-o text-muted"></i>
+                                {% endfor %}
+                            </p>
+                        </div>
+                    </div>
+                    <div class="mt-3">
+                        <p>{{ review.review_text }}</p>
+                    </div>
+                </article>
+                {% empty %}
+                <p>No reviews yet. Be the first to review this product!</p>
+                {% endfor %}
+            </div>
+        </div>
+
+
+          <!-- Review Form -->
+        {% if can_review %}
+        <div class="row mt-5">
+            <div class="col-md-9">
+                <h4>Submit Your Review</h4>
+                <form action="{% url 'product_detail' detail.category.slug detail.slug %}" method="POST">
+                    {% csrf_token %}
+                    <div class="form-group">
+                        <label for="rating">Rating</label>
+                        <div class="star-rating">
+                            <input type="radio" id="star5" name="rating" value="5"/><label for="star5" title="5 stars"><i class="fas fa-star"></i></label>
+                            <input type="radio" id="star4" name="rating" value="4"/><label for="star4" title="4 stars"><i class="fas fa-star"></i></label>
+                            <input type="radio" id="star3" name="rating" value="3"/><label for="star3" title="3 stars"><i class="fas fa-star"></i></label>
+                            <input type="radio" id="star2" name="rating" value="2"/><label for="star2" title="2 stars"><i class="fas fa-star"></i></label>
+                            <input type="radio" id="star1" name="rating" value="1"/><label for="star1" title="1 star"><i class="fas fa-star"></i></label>
+                        </div>
+                    </div>
+                    <div class="form-group">
+                        <label for="review_text">Review</label>
+                        <textarea id="review_text" name="review_text" rows="3" class="form-control"></textarea>
+                    </div>
+                    <button type="submit" class="btn btn-primary">Submit Review</button>
+                </form>
+            </div>
+        </div>
+        {% endif %}
+</section>
+
+<!-- Custom Styles -->
+<style>
+  .section-content.bg {
+        background-color: #F9F9F9;
+        padding: 3rem 0;
+    }
+
+    .title {
+        color: #003366;
+        margin-bottom: 1rem;
+    }
+
+    .price {
+        color: #FF6F61;
+    }
+
+    .item-option-select h6 {
+        color: #003366;
+        font-weight: bold;
+    }
+
+    .btn-primary {
+        background-color: #1a1a40;
+        border-color: #1a1a40;
+    }
+
+    .btn-primary:hover {
+        background-color: #FF6F61;
+        border-color: #FF6F61;
+    }
+
+    .text-danger {
+        color: #FF6F61;
+    }
+
+    .card {
+        border: 1px solid #E0E0E0;
+        border-radius: 8px;
+        background-color: #FFFFFF;
+        box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+    }
+
+    .box {
+        border: 1px solid #E0E0E0;
+        border-radius: 8px;
+        background-color: #FFFFFF;
+    }
+
+    .star-rating {
+        direction: rtl;
+        display: inline-block;
+    }
+
+    .star-rating input[type="radio"] {
+        display: none;
+    }
+
+    .star-rating label {
+        color: #fff;
+        background-color: #003366;
+        font-size: 2rem;
+        padding: 0;
+        cursor: pointer;
+    }
+
+
+.star-rating label:hover,
+    .star-rating label:hover ~ label,
+    .star-rating input[type="radio"]:checked ~ label {
+        color: #FFD700;
+    }
+    .card-product-grid {
+        border: 1px solid #E0E0E0;
+        border-radius: 8px;
+        background-color: #FFFFFF;
+        box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+        margin-bottom: 1.5rem;
+    }
+    .card-product-grid .img-wrap {
+        overflow: hidden;
+        border-radius: 8px 8px 0 0;
+    }
+    .card-product-grid img {
+        max-height: 200px;
+        object-fit: cover;
+    }
+    .info-wrap {
+        padding: 15px;
+    }
+    .info-wrap .title {
+        color: #003366;
+        font-weight: bold;
+    }
+    .info-wrap .price {
+        color: #FF6F61;
+    }
+</style>
+
+{% endblock %}

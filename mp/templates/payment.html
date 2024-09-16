@@ -1,0 +1,113 @@
+
+{% extends 'base.html' %}
+{% load static %}
+{% block title %}Payment{% endblock %}
+{% block content %}
+<section class="section-content padding-y bg">
+    <div class="container">
+        <div class="row">
+            <main class="col-md-8">
+                <article class="card mb-4">
+                    <div class="card-body">
+                        <h4 class="card-title mb-4">Billing Address</h4>
+                        <table class="table table-bordered">
+                            <tbody>
+                            <tr>
+                                    <th>Order Number</th>
+                                    <td>{{ order.order_number }}</td>
+                                </tr>
+                                <tr>
+                                    <th>First Name</th>
+                                    <td>{{ order.first_name }}</td>
+                                </tr>
+                                <tr>
+                                    <th>Last Name</th>
+                                    <td>{{ order.last_name }}</td>
+                                </tr>
+                                <tr>
+                                    <th>Address Line 1</th>
+                                    <td>{{ order.address_line1 }}</td>
+                                </tr>
+                                <tr>
+                                    <th>Address Line 2</th>
+                                    <td>{{ order.address_line2 }}</td>
+                                </tr>
+                                <tr>
+                                    <th>City</th>
+                                    <td>{{ order.city }}</td>
+                                </tr>
+                                <tr>
+                                    <th>State</th>
+                                    <td>{{ order.state }}</td>
+                                </tr>
+                                <tr>
+                                    <th>Country</th>
+                                    <td>{{ order.country }}</td>
+                                </tr>
+                                <tr>
+                                    <th>Phone</th>
+                                    <td>{{ order.phone }}</td>
+                                </tr>
+                                <tr>
+                                    <th>Email</th>
+                                    <td>{{ order.email }}</td>
+                                </tr>
+                            </tbody>
+                        </table>
+                    </div>
+                </article>
+
+                <article class="card mb-4">
+                    <div class="card-body">
+                        <h4 class="card-title mb-4">Order Items</h4>
+                        <div class="row">
+                            {% for item in cart_items %}
+                            <div class="col-md-6">
+                                <figure class="itemside mb-4">
+                                    <div class="aside"><img src="{% static './images/items/1.jpg' %}" class="border img-sm"></div>
+                                    <figcaption class="info">
+                                        <p>{{ item.product.product_name }}</p>
+                                        <span class="text-muted">{{ item.quantity }}x = ETB {{ item.subtotal }}</span>
+     <p>
+          {% if item.variations.all %}
+                   {% for i in item.variations.all %}
+                  {{ i.variation_category }} : {{ i.variation_value }} <br>       
+                                      {% endfor %}
+                                      {% endif %}                
+                                 
+                                        
+                          </p>
+                                    </figcaption>
+                                </figure>
+                            </div>
+                            {% endfor %}
+                        </div>
+                    </div>
+                </article>
+
+
+<article class="card mb-4">
+                    <div class="card-body">
+                        <h4 class="card-title mb-4">Order Summary</h4>
+                        <p>Subtotal: ETB {{ order.order_total }}</p>
+                        <p>Tax: ETB {{ order.tax }}</p>
+                        <p>Total: ETB {{ order.order_total|add:order.tax }}</p>
+                        <hr>
+            
+   <p class="mb-3">
+    <img src="{% static './images/misc/Chappa.png' %}" height="26">
+    <img src="{% static './images/misc/Telebirr.png' %}" height="26">
+    <img src="{% static './images/misc/Cbebirr.png' %}" height="26">
+    <img src="{% static './images/misc/Amole.png' %}" height="26">
+   </p>
+      <button class="btn btn-primary btn-block" style="background-color:#003366;" onclick="location.href='{% url 'chapa_payment' order.order_number %}'">Proceed to Payment</button>
+  
+                    
+
+                    </div>
+                </article>
+            </main>
+        </div>
+    </div>
+</section>
+{% endblock %}

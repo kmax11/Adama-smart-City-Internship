@@ -1,0 +1,194 @@
+
+{% extends 'base.html' %}
+{% load static %}
+{% block title %}Dashboard{% endblock %}
+{% block content %}
+<div class="container mt-4">
+    <div class="profile-header text-center mb-4">
+        {% if user.profile.profile_picture %}
+        <img src="{{ user.profile.profile_picture.url }}" alt="Profile Picture" class="rounded-circle" style="width: 100px; height:100px; border-radius: 50%; border:4px solid #ff6f61;">
+        <h2 class="mt-3">{{ user.username }}</h2>   
+        {% else %}
+        <h2 class="mt-3">{{ user.username }}</h2>
+         
+        {% endif %}
+        <p class="text-muted" style="color: #e9ecef;">{{ profile_info.email }}</p>
+    </div>
+
+    <div class="profile-info">
+        <ul class="nav nav-tabs justify-content-center" id="profileTab" role="tablist">
+            <li class="nav-item">
+                <a class="nav-link active" id="info-tab" data-toggle="tab" href="#info" role="tab" aria-controls="info" aria-selected="true">Profile Info</a>
+            </li>
+            <li class="nav-item">
+                <a class="nav-link" id="orders-tab" data-toggle="tab" href="#orders" role="tab" aria-controls="orders" aria-selected="false">Order History</a>
+            </li>
+            <li class="nav-item">
+                <a class="nav-link" id="settings-tab" data-toggle="tab" href="#settings" role="tab" aria-controls="settings" aria-selected="false">Account Settings</a>
+            </li>
+            <li class="nav-item">
+                <a class="nav-link" id="security-tab" data-toggle="tab" href="#security" role="tab" aria-controls="security" aria-selected="false">Security Settings</a>
+            </li>
+            <li class="nav-item">
+                <a class="nav-link text-danger" href="{% url 'logout' %}">Logout</a>
+            </li>
+        </ul>
+
+        <div class="tab-content mt-4" id="profileTabContent">
+            <div class="tab-pane fade show active" id="info" role="tabpanel" aria-labelledby="info-tab">
+                <h4 class="mb-3">Profile Information</h4>
+                <ul class="list-group">
+                    <li class="list-group-item"><strong>Name:</strong> {{ profile_info.name }}</li>
+                    <li class="list-group-item"><strong>Email:</strong> {{ profile_info.email }}</li>
+                    <li class="list-group-item"><strong>Contact:</strong> {{ profile_info.contact }}</li>
+                    <li class="list-group-item"><strong>Address:</strong> {{ profile_info.address }}</li>
+                </ul>
+            </div>
+            <div class="tab-pane fade" id="orders" role="tabpanel" aria-labelledby="orders-tab">
+                <h4 class="mb-4">Order History</h4>
+                {% if orders %}
+                <div class="table-responsive">
+                    <table class="table table-bordered table-hover">
+                        <thead class="thead-light">
+                            <tr>
+                                <th scope="col">Order Number</th>
+                                <th scope="col">Status</th>
+                                <th scope="col">Order Date</th>
+                                <th scope="col">Total</th>
+                                <th scope="col">Details</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            {% for order in orders %}
+                            <tr>
+                                <td>{{ order.order_number }}</td>
+                                <td>
+                                    <span class="badge 
+                                        {% if order.status == 'completed' %}
+                                            badge-success
+                                        {% elif order.status == 'Pending' %}
+                                            badge-warning
+                                        {% elif order.status == 'Cancelled' %}
+                                            badge-danger
+                                        {% else %}
+                                            badge-secondary
+                                        {% endif %}
+
+Fetene Abebe, [16 Aug 2024 17:30:02]
+">
+                                        {{ order.status }}
+                                    </span>
+                                </td>
+                                <td>{{ order.created_at|date:"M d, Y" }}</td>
+                                <td>ETB {{ order.order_total|floatformat:2 }}</td>
+                                <td><a href="#" class="btn btn-sm btn-outline-primary">View Details</a></td>
+                            </tr>
+                            {% endfor %}
+                        </tbody>
+                    </table>
+                </div>
+                {% else %}
+                <div class="alert alert-info" role="alert">
+                    <i class="fas fa-info-circle"></i> You have no orders yet.
+                </div>
+                {% endif %}
+            </div>
+            <div class="tab-pane fade" id="settings" role="tabpanel" aria-labelledby="settings-tab">
+                <h4 class="mb-3">Account Settings</h4>
+                <form method="post" action="#">
+                    {% csrf_token %}
+                    <div class="form-group">
+                        <label for="name">Name</label>
+                        <input type="text" class="form-control" id="name" name="name" value="{{ profile_info.name }}" required>
+                    </div>
+                    <div class="form-group">
+                        <label for="email">Email address</label>
+                        <input type="email" class="form-control" id="email" name="email" value="{{ profile_info.email }}" required>
+                    </div>
+                    <div class="form-group">
+                        <label for="contact">Contact</label>
+                        <input type="text" class="form-control" id="contact" name="contact" value="{{ profile_info.contact }}">
+                    </div>
+                    <div class="form-group">
+                        <label for="address">Address</label>
+                        <textarea class="form-control" id="address" name="address">{{ profile_info.address }}</textarea>
+                    </div>
+                    <button type="submit" class="btn btn-primary">Save Changes</button>
+                </form>
+            </div>
+            <div class="tab-pane fade" id="security" role="tabpanel" aria-labelledby="security-tab">
+                <h4 class="mb-3">Security Settings</h4>
+                <a href="{% url 'password_change' %}" class="btn btn-primary">Update Password</a>
+            </div>
+        </div>
+    </div>
+</div>
+
+<style>
+    body {
+        background-color: #f4f4f4;
+    }
+    .profile-header {
+        background: #1a1a40; 
+        color: #fff;
+        padding: 30px;
+        border-radius: 8px;
+        position: relative;
+        overflow: hidden;
+        box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
+    }
+    .profile-header img {
+        width: 120px;
+        height: 120px;
+        border-radius: 50%;
+        border: 4px solid #ff6f61;
+    }
+    .profile-header h2 {
+        margin-top: 15px;
+        font-size: 1.8rem;
+    }
+    .profile-info {
+        background: #fff;
+        border-radius: 8px;
+        box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
+        padding: 20px;
+        margin-top: 20px;
+    }
+    .nav-tabs {
+        background: #1a1a40; 
+        border-radius: 8px;
+    }
+    .nav-tabs .nav-link.active {
+        background-color: #ff6f61;
+        color: #fff;
+    }
+    .nav-tabs .nav-link {
+        color: #fff;
+    }
+    .nav-tabs .nav-link:hover {
+        background: #ff6f61;
+    }
+    .tab-content {
+        background: #f9f9f9;
+        padding: 20px;
+        border-radius: 8px;
+        box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
+    }
+    .table-hover tbody tr:hover {
+        background-color: #f1f1f1;
+    }
+    .badge-success {
+        background-color: #28a745;
+    }
+    .badge-warning {
+        background-color: #ffc107;
+    }
+    .badge-danger {
+        background-color: #dc3545;
+    }
+    .alert-info {
+        background-color: #e9ecef;
+        border: 1px solid #cce5ff;
+    }
+</style>
+{% endblock %}
